@@ -1,25 +1,26 @@
+import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 
-def train_and_test_svm(X, y, test_size=0.3):
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=42)
+def evaluate_model(model, X, y, test_size=0.3, n_iterations=1000):
+    accuracies = []
+    model.fit(X, y)  # train model only once
+    for _ in range(n_iterations):
+        _, X_test, _, y_test = train_test_split(X, y, test_size=test_size)
+        accuracy = model.score(X_test, y_test)
+        accuracies.append(accuracy)
+    return np.mean(accuracies)
+
+def evaluate_svm(X, y, test_size=0.3, n_iterations=1000):
     svm_model = SVC()
-    svm_model.fit(X_train, y_train)
-    accuracy = svm_model.score(X_test, y_test)
-    return accuracy
+    return evaluate_model(svm_model, X, y, test_size, n_iterations)
 
-def train_and_test_random_forest(X, y, test_size=0.3, n_estimators=100):
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=42)
-    rf_model = RandomForestClassifier(n_estimators=n_estimators, random_state=42)
-    rf_model.fit(X_train, y_train)
-    accuracy = rf_model.score(X_test, y_test)
-    return accuracy
+def evaluate_random_forest(X, y, test_size=0.3, n_estimators=100, n_iterations=1000):
+    rf_model = RandomForestClassifier(n_estimators=n_estimators)
+    return evaluate_model(rf_model, X, y, test_size, n_iterations)
 
-def train_and_test_knn(X, y, test_size=0.3, n_neighbors=5):
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=42)
+def evaluate_knn(X, y, test_size=0.3, n_neighbors=5, n_iterations=1000):
     knn_model = KNeighborsClassifier(n_neighbors=n_neighbors)
-    knn_model.fit(X_train, y_train)
-    accuracy = knn_model.score(X_test, y_test)
-    return accuracy
+    return evaluate_model(knn_model, X, y, test_size, n_iterations)
