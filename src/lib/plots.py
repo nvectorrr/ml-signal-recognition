@@ -29,3 +29,15 @@ def plot_qam_signal(qam_data, Fs=10000):
     N = len(qam_data) // 2
     t = np.arange(0, N / Fs, 1 / Fs)
     plot_signal(t, qam_data[:N, 0], "QAM Signal", "Time (s)", "Amplitude")
+
+def plot_predictions(y_test, y_pred, title):
+    plt.figure(figsize=(10, 4))
+    y_test_combined = np.concatenate(y_test)
+    y_pred_combined = np.concatenate(y_pred)
+    plt.scatter(y_test_combined, y_pred_combined, alpha=0.5)
+    plt.title(title)
+    plt.xlabel("Actual")
+    plt.ylabel("Predicted")
+    plt.plot([y_test_combined.min(), y_test_combined.max()],
+             [y_test_combined.min(), y_test_combined.max()], 'k--')  # Линия идеального соответствия
+    plt.show()
