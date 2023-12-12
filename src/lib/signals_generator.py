@@ -9,6 +9,13 @@ def generate_ofdm_signal(N=64, Ncp=16):
     ofdm_signal = np.concatenate([ofdm_signal[-Ncp:], ofdm_signal])  # add cycle prefix
     return np.column_stack([np.real(ofdm_signal), np.imag(ofdm_signal)])
 
+def generate_ofdm_signal_bpsk(N=64, Ncp=16):
+    data = np.random.randint(0, 2, N)  # random data
+    bpsk_modulated = 2*data - 1  # BPSK mod
+    ofdm_signal = ifft(bpsk_modulated, N)  # IFFT
+    ofdm_signal = np.concatenate([ofdm_signal[-Ncp:], ofdm_signal])  # add cycle prefix
+    return np.column_stack([np.real(ofdm_signal), np.imag(ofdm_signal)])
+
 def generate_am_signal(Fc=1000, Fs=10000, duration=1):
     t = np.arange(0, duration, 1 / Fs)  # time
     carrier = np.cos(2 * np.pi * Fc * t)  # carrier

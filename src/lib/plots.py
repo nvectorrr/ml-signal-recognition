@@ -15,6 +15,11 @@ def plot_ofdm_signal(ofdm_data, Fs=10000):
     t = np.arange(0, N / Fs, 1 / Fs)
     plot_signal(t, ofdm_data[:N, 0], "OFDM Signal", "Time (s)", "Amplitude")
 
+def plot_ofdm_bpsk_signal(ofdm_bpsk_data, Fs=10000):
+    N = len(ofdm_bpsk_data) // 2
+    t = np.arange(0, N / Fs, 1 / Fs)
+    plot_signal(t, ofdm_bpsk_data[:N, 0], "OFDM BPSK Signal", "Time (s)", "Amplitude")
+
 def plot_am_signal(am_data, Fs=10000):
     N = len(am_data) // 2
     t = np.arange(0, N / Fs, 1 / Fs)
